@@ -2,6 +2,8 @@
 
 Vault Lambda Website
 
+Rewritten in typescript for riot.js
+
 ## Start
 
 ```
@@ -18,4 +20,10 @@ npm test
 
 ```
 npm run build
+```
+
+## Publish 
+
+```
+npm run publish
 ```
