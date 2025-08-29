@@ -1,0 +1,134 @@
+<home>
+  <div id="Vault-Lambda-Featured" class="ml-auto mt-auto p-4 text-center">
+    <h6 class="display-4 text-dark">
+      Generational
+    </h6>
+    <p class="lead">
+      Software Development & Consultation
+    </p>
+  </div>
+  <div id="matrix"></div>
+  <script>
+
+  import { HTML_MATH_SYMBOLS } from '../utils/math_symbols_literal.ts'
+  export default {
+    symbols: HTML_MATH_SYMBOLS,
+    stop: true,
+    weights: [],
+    onMounted(){
+      const el = document.getElementById("matrix");
+      this.matrix(el);
+    },
+    ra(max){
+      return Math.floor(Math.random() * Math.floor(max));
+    },
+    matrix( element ){
+      const width =  $( element ).width();
+      const height = $( element ).height();
+      const numcharsvertical = height/8;
+      const numchars = width/12;
+      const innerDiv = document.createElement("div");
+      if(this.weights.length == 0){
+        console.log("Initialize weights");
+        for(var i=0;i<numchars; i++){
+          this.weights.push({"opacity":this.ra(9),"direction":true, "wait":0 });
+        }
+      }
+      for(var i=0; i<numchars; i++){
+        try{
+          if(this.weights[i]["opacity"]>10){
+            this.weights[i]["direction"]=false;
+          }
+          else if(this.weights[i]["opacity"]<1){
+            this.weights[i]["direction"]=true;
+            this.weights[i]["wait"]=this.ra(100);
+          }
+          if(this.weights[i]["wait"]>0){
+            this.weights[i]["wait"]--;
+          }
+          else{
+              if(this.weights[i]["direction"]==true){
+                this.weights[i]["opacity"]=this.weights[i]["opacity"]+1;
+              }
+              else{
+                this.weights[i]["opacity"]=this.weights[i]["opacity"]-1;
+              }
+            
+          }
+          
+          var opacityWrapper = document.createElement("span");
+          opacityWrapper.setAttribute("style","opacity:"+this.weights[i]["opacity"]/10+";");
+          opacityWrapper.appendChild(document.createTextNode(this.symbols[this.ra(this.symbols.length)]+" "));
+          innerDiv.appendChild(opacityWrapper);
+        }
+        catch(exception){
+          //new Rows will be generated
+        }
+        while(element.childNodes.length>numcharsvertical){
+          element.removeChild(element.lastChild);
+        }
+      }
+      element.prepend(innerDiv);
+      setTimeout( ()=>{
+        this.matrix(element);
+      },80);
+    }
+  }
+  /*
+  function matrix( element ){
+    var width =  $( element ).width();
+    var height = $( element ).height();
+    var numcharsvertical = height/8;
+    var numchars = width/12;
+    var innerDiv = document.createElement("div");
+    if(this.weights.length == 0){
+      console.log("Initialize this.weights");
+      for(var i=0;i<numchars; i++){
+        this.weights.push({"opacity":ra(9),"direction":true, "wait":0 });
+      }
+    }
+    for(var i=0; i<numchars; i++){
+      try{
+        if(this.weights[i]["opacity"]>10){
+          this.weights[i]["direction"]=false;
+        }
+        else if(this.weights[i]["opacity"]<1){
+          this.weights[i]["direction"]=true;
+          this.weights[i]["wait"]=ra(100);
+        }
+        if(this.weights[i]["wait"]>0){
+          this.weights[i]["wait"]--;
+        }
+        else{
+            if(this.weights[i]["direction"]==true){
+              this.weights[i]["opacity"]=this.weights[i]["opacity"]+1;
+            }
+            else{
+              this.weights[i]["opacity"]=this.weights[i]["opacity"]-1;
+            }
+          
+        }
+        
+        var opacityWrapper = document.createElement("span");
+        opacityWrapper.setAttribute("style","opacity:"+this.weights[i]["opacity"]/10+";");
+        opacityWrapper.appendChild(document.createTextNode(ra(2)+" "));
+        innerDiv.appendChild(opacityWrapper);
+      }
+      catch(exception){
+        //new Rows will be generated
+      }
+      while(element.childNodes.length>numcharsvertical){
+        element.removeChild(element.lastChild);
+      }
+    }
+    element.prepend(innerDiv);
+    setTimeout( function(){
+      matrix(element);
+    },80);
+  }
+  
+  
+  */
+  
+  </script>
+</home>

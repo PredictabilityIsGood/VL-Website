@@ -1,0 +1,59 @@
+html, body{
+  position:absolute;
+  width:100%;
+  min-height:100%;
+  height:100%;
+}
+#test{
+  font-size:.8em;
+  margin-right:3px;
+}
+nav {
+  font-weight:100 !important;
+}
+#matrix {
+  width:100%;
+  height:calc(100% - 60px);
+  overflow:hidden;
+  position:fixed;
+  left:0;
+  background-color:white;
+  opacity:.4;
+  color:rgb(136, 136, 136);
+  font-weight:bold;
+  font-family:Helvetica;
+  -webkit-touch-callout: none; /* iOS Safari */
+-webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none; /* Non-prefixed version, currently
+                              supported by Chrome and Opera */
+}
+#Vault-Lambda-Featured{
+  top:50%;
+  left:50%;
+  margin-left: -184px !important;
+  margin-top:-85px !important;
+  position:fixed;
+  background-color:rgba(0, 0, 0, 0.1);
+  z-index: 1022;
+  width:auto;
+}
+
+.team-bio {
+  min-width:300px;
+}
+
+.avatar {
+  width:100%;
+  border-radius:50%;
+}
+
+.text-wrap {
+  text-wrap: auto;
+}
+
+.badge {
+  line-height:1.4em;
+}

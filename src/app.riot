@@ -1,0 +1,84 @@
+<app class="h-100">
+  <div class="d-flex flex-column h-100">
+    <div class="container-fluid">
+      <global-nav></global-nav>
+      <router>
+        <div if={state.showNotFound}>
+          <div class="column column-60">
+            <not-found />
+          </div>
+        </div>
+        <div if={!state.showNotFound}>
+          <div class="column column-60">
+            <route each={page in state.pages} path={page.path}>
+              <main is={page.componentName}/>
+            </route>
+          </div>
+        </div>
+      </router>
+    </div>
+    <footer class="d-flex footer mt-auto py-3">
+      <div class="container text-center">
+        <span class="text-muted"><small>Copyright Vault Lambda LLC<br>2018 - { (new Date()).getFullYear()}</small></span>
+      </div>
+    </footer>
+  </div>
+  
+  <script>
+    import { Router, Route, route, toRegexp, match } from '@riotjs/route'
+    import lazy from '@riotjs/lazy'
+    import NotFound from './pages/not-found.riot'
+    import pages from './pages'
+    import Loader from './components/includes/loader/loader.riot'
+
+    export default {
+      components: {
+        Router,
+        Route,
+        NotFound,
+        Home: lazy(Loader, () => import(
+          /* webpackPrefetch: true, webpackChunkName: 'pages/home' */
+          './pages/home.riot'
+        )),
+        Ideal: lazy(Loader, () => import(
+          /* webpackPrefetch: true, webpackChunkName: 'pages/ideal' */
+          './pages/ideal.riot'
+        )),
+        Team: lazy(Loader, () => import(
+          /* webpackPrefetch: true, webpackChunkName: 'pages/team' */
+          './pages/team.riot'
+        )),
+        Projects: lazy(Loader, () => import(
+          /* webpackPrefetch: true, webpackChunkName: 'pages/projects' */
+          './pages/projects.riot'
+        )),
+        Contact: lazy(Loader, () => import(
+          /* webpackPrefetch: true, webpackChunkName: 'pages/contact' */
+          './pages/contact.riot'
+        )),
+      },
+      state: {
+        pages,
+        showNotFound: false,
+        activePage: null
+      },
+      onBeforeMount({ isServer }) {
+        // create a stream on all routes to catch the not-found page
+        this.anyRouteStream = route('(.*)')
+        this.anyRouteStream.on.value(this.onAnyRoute)
+      },
+      onAnyRoute(path) {
+        // show the not found page if none of the page paths are matched
+        const activePage = pages.find(p => match(path.pathname, toRegexp(p.path)))
+
+        this.update({
+          activePage,
+          showNotFound: !activePage
+        })
+      },
+      onBeforeUnmount() {
+        this.anyRouteStream.end()
+      }
+    }
+  </script>
+</app>

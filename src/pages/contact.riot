@@ -1,0 +1,47 @@
+<contact>
+    <div class="row">
+        <div class="col-sm">
+            <div class="mt-4 jumbotron text-center">
+                <h6 class="display-4 text-dark">
+                    Consult With Us
+                </h6>
+                <p class="lead">
+                    If we can't help you on your mission, we know someone that can
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2 align-items-center">
+        <div class="container">
+            <div class="row mt-4">
+                <div class="mt-4 col-sm align-items-center">
+                    <div class="card mx-auto" style="width: 18rem;">
+                        <div class="card-body">
+                        <h5 class="card-title">Email Us</h5>
+                        <p class="card-text">We mean it, if we can't help you find what you're looking, we'll guide you to someone who can.</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><i data-feather="mail" style="color:gray;" class="mr-2"></i><a href="mailto:info@VaultLamdbda.com">info@vaultlambda.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script> 
+        feather.replace();
+
+        function get(name){
+            if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search)){
+                return decodeURIComponent(name[1]);
+            }
+            else{
+                return false;
+            }
+        }
+        
+        if(get("inquiry")!=false){
+            $("#inquiry").val(get("inquiry"));
+        }
+    </script>
+</contact>

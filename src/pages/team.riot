@@ -1,0 +1,176 @@
+<team>
+
+  <!-- Header -->
+  <div class="row">
+    <div class="col-sm">
+      <div class="mt-4 jumbotron text-center">
+        <h6 class="display-4 text-dark">Our Team</h6>
+        <p class="lead mb-0">People who deliver excellent service to our clients</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="row mb-3">
+    <div class="col-sm d-flex flex-wrap align-items-center">
+      <span class="mr-2 text-muted small">Filter:</span>
+      <div class="btn-group btn-group-sm" role="group" aria-label="Team filters">
+        <button onclick={()=>updateFilter([])} type="button" class="btn btn-outline-secondary filter-btn {filter.length == 0 ? "active" : ""}" data-filter="all">All</button>
+        <button onclick={()=>updateFilter(["Direct"])} type="button" class="btn btn-outline-secondary filter-btn {filter.includes("Direct") ? "active" : ""}">Direct</button>
+        <button onclick={()=>updateFilter(["Contract Consultants"])} type="button" class="btn btn-outline-secondary filter-btn {filter.includes("Contract Consultants") ? "active" : ""}">Contract Consultants</button>
+      </div>
+      <div class="ml-auto">
+        <input id="searchBox" type="search" class="form-control form-control-sm" placeholder="Search name, skill, tag" value={search} onkeyup={(e)=>this.updateSearch(e.target.value)}>
+      </div>
+    </div>
+  </div>
+
+  <!-- Team Grid -->
+  <div id="teamGrid" class="row">
+    <!-- Member 1 -->
+    <div each={member in members.filter(member=>(filter.length == 0  || filter.includes(member.employment_type)) && ( search == "" || member.search_str.includes(search)))} class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 team-bio">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body text-center">
+          <img class="avatar mb-3" src="{ member.avatar }" alt="Headshot placeholder"
+              onerror="this.src='data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 96 96%22&gt;&lt;rect width=%2296%22 height=%2296%22 fill=%22%23e9ecef%22/&gt;&lt;text x=%2750%25%27 y=%2750%25%27 dy=%27.35em%27 font-family=%27Arial%27 font-size=%2720%27 text-anchor=%27middle%27 fill=%27%2399a%27&gt;96x96&lt;/text&gt;&lt;/svg&gt;'">
+          <h5 class="card-title mb-0">{ member.name }</h5>
+          <small class="text-muted d-block mb-2">{ member.title }</small>
+          <div class="mb-2">
+            <span class="text-wrap mt-1 badge badge-primary">{ member.languages }</span><br>
+            <span class="text-wrap mt-1 badge badge-info">{ member.proficiencies }</span><br>
+            <span class="text-wrap mt-1 badge badge-secondary">{ member.duties }</span>
+          </div>
+          <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#bio1">View Bio</button>
+        </div>
+        <div class="card-footer bg-white d-flex justify-content-center">
+          <a class="mx-2" href="mailto:{member.email}" aria-label="Email">
+            <!-- mail icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H4z"/><path d="M22 6l-10 7L2 6"/></svg>
+          </a>
+          <a class="mx-2" href="#" aria-label="LinkedIn">
+            <!-- linkedin icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v6h-4v-6a2 2 0 0 0-4 0v6h-4v-12h4v2"/><rect x="2" y="9" width="4" height="11"/><circle cx="4" cy="5" r="2"/></svg>
+          </a>
+          <a class="mx-2" href="#" aria-label="GitHub">
+            <!-- github icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3"/><path d="M15 22v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 18 4.77 5.07 5.07 0 0 0 17.91 1S16.73.65 14 2.48a13.38 13.38 0 0 0-7 0C4.27.65 3.09 1 3.09 1A5.07 5.07 0 0 0 3 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="row">
+    <div class="col-sm">
+      <div class="mt-2 alert alert-light border text-center">
+        Interested in partnering or joining? <a href="mailto:info@vaultlambda.com?subject=Team Inquiry">Email us</a>.
+      </div>
+    </div>
+  </div>
+
+  <!-- Bios (Modals) -->
+  <div each={member in members} class="modal fade" id="bio1" tabindex="-1" role="dialog" aria-labelledby="bio1Label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document"><div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bio1Label">{member.bio.title}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <pre class="text-wrap">
+          {member.bio.description}
+        </pre>
+      </div>
+    </div></div>
+  </div>
+
+  <script>
+    import grul from 'grul'
+
+
+    export default {
+      filter: [],
+      members:[{
+        avatar: "assets/images/rm-pfp.png",
+        name: "Ryan Montgomery",
+        email: "ryan.montgomery@vaultlambda.com",
+        employment_type: "Direct",
+        title: "Principal Engineer • Web, Database, Embedded, AI Systems",
+        languages: "C#, C/C++, JS, TS, Python, Java",
+        proficiencies: "SaaS, Realtime Data, Embedded (RTOS)/Relational (MSSQL, Oracle, MySQL, PostGresQL)/NoSQL Databases, AI Engineer",
+        duties: "Architecture & Development",
+        bio:{
+          title: "About Ryan",
+          description:`Ryan Montgomery is a 2015 graduate of Rochester Institute of Technology (RIT). He has worked on projects ranging across various disciplines including: 
+• Full-Stack SaaS projects (Intelligent Product Solutions, Long Island University, PyroSignal & Suppression)
+• Real-Time Data Ingestion & Simulation For Electric Transmission Microgrid Simulation (Verizon)
+• Large Scale Manufacturing Software (Embecta)
+• Siemens Building Technology IOT Integration Pipelines (PyroSignal & Suppresion Inc.)
+• Specialized Artifical Intelligence Systems (PyroSignal & Suppresion Inc.)
+• Remote RDBMS Schema Migration Systems (iProcedures)
+• Cross-Platform Mobile Applications (Embecta, Long Island University)
+• Custom Cryptographic (Diffie Hellman) Handshake Protocols For Class II Medical Devices (Embecta)
+• Embedded Sensor Implementations for Magnetometers and Accelerometers (HearSee Mobility)
+• Successful FDA 510k Security (Neuvotion)
+• Centralized Payment Gateways (Long Island University)
+• Business Intelligence Tools - Full Platforms for Data Protection, Reporting, Management (Long Island University)
+• Open Source Projects - View his github for more information`
+        }
+      },{
+        avatar: "assets/images/gb-pfp.jpg",
+        name: "Giuseppe Barbieri",
+        email: "info@vaultlambda.com",
+        employment_type: "Contract Consultants",
+        title: "Consulting Senior Software Engineer",
+        languages: "JS, TS, Python, C#, Kotlin, Java",
+        proficiencies: "Web, iOS, Android",
+        duties: "Architecture Implementation",
+        bio: {
+          title: "About Giuseppe",
+          description: `Pondering His Orb, Giuseppe Barbieri is a 2020 Graduate of St. Joseph's University New York. He has worked on projects ranging across various disciplines including: 
+• Cross Platform Mobile Application Development on 510k Class II Devices (Embecta)
+• Artificial Intelligence and Perceptron Systems (Intelligent Product Solutions)
+• Mobile Watchdog Systems (Embecta)
+• Electric Transmission Microgrid Simulator (Verizon)
+• Full-Stack architecture & development of a Business Management Platform (ElanTech)
+• Scripting Automation for integration on external Vendor Websites & API's
+• eCommerce Integrations`
+        }
+      },{
+        avatar: "assets/images/as-pfp.jpg",
+        name: "Alexander Sokolov",
+        email: "info@vaultlambda.com",
+        employment_type: "Contract Consultants",
+        title: "Consulting Senior Embedded Engineer",
+        languages: "C/C++, Python",
+        proficiencies: "Hardware/Embedded Systems, Assembly & Interfacing",
+        duties: "Embedded/Robotics Specialist",
+        bio: {
+          title: "About Alexander",
+          description: "Bio coming soon"
+        }
+      }],
+      search: "",
+      search_keys: ["title","languages","proficiencies","duties"],
+      onBeforeMount(){
+        this.buildSearchTree();
+      },
+      buildSearchTree() {
+        this.members.forEach((member)=>{
+          member.search_str = "";
+          grul.atEvery(member,(data,htp,hlp)=>{
+            hlp.length > 0 && this.search_keys.includes(hlp[hlp.length-1]) ? member.search_str += `, ${data}` : false;
+          })
+        })
+      },
+      updateSearch(search){
+        this.search = search;
+        this.update();
+      },
+      updateFilter(filter){
+        this.filter = filter
+        this.update();
+      }
+    }
+  </script>
+</team>
