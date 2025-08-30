@@ -28,7 +28,7 @@
   <!-- Team Grid -->
   <div id="teamGrid" class="row">
     <!-- Member 1 -->
-    <div each={member in members.filter(member=>(filter.length == 0  || filter.includes(member.employment_type)) && ( search == "" || member.search_str.includes(search)))} class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 team-bio">
+    <div each={(member,index) in members.filter(member=>(filter.length == 0  || filter.includes(member.employment_type)) && ( search == "" || member.search_str.includes(search)))} class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 team-bio">
       <div class="card h-100 shadow-sm">
         <div class="card-body text-center">
           <img class="avatar mb-3" src="{ member.avatar }" alt="Headshot placeholder"
@@ -36,24 +36,32 @@
           <h5 class="card-title mb-0">{ member.name }</h5>
           <small class="text-muted d-block mb-2">{ member.title }</small>
           <div class="mb-2">
-            <span class="text-wrap mt-1 badge badge-primary">{ member.languages }</span><br>
-            <span class="text-wrap mt-1 badge badge-info">{ member.proficiencies }</span><br>
-            <span class="text-wrap mt-1 badge badge-secondary">{ member.duties }</span>
+            <span onclick={()=>updateData("languages_full",member,true)} if={!member.languages_full} class="{member.languages.length > 80 && "ppr-sdw"} color-gray cursor-pointer text-wrap mt-1 badge badge-white">{ member.languages.length > 80 ? member.languages.slice(0,60) + "..." : member.languages }</span>
+            <span onclick={()=>updateData("languages_full",member,false)} if={member.languages_full} class="{member.languages.length > 80 && "ppr-sdw"} color-gray cursor-pointer text-wrap mt-1 badge badge-white">{ member.languages }</span>
+            <hr />
+            <span onclick={()=>updateData("proficiencies_full",member,true)} if={!member.proficiencies_full} class="{member.proficiencies.length > 80 && "ppr-sdw"} color-gray cursor-pointer text-wrap mt-1 badge badge-white">{ member.proficiencies.length > 80 ? member.proficiencies.slice(0,60) + "..." : member.proficiencies }</span>
+            <span onclick={()=>updateData("proficiencies_full",member,false)} if={member.proficiencies_full} class="{member.proficiencies.length > 80 && "ppr-sdw"} color-gray cursor-pointer text-wrap mt-1 badge badge-white">{ member.proficiencies }</span><br>
+            <!--
+            <hr />
+            <span onclick={()=>updateData("duties_full",member,true)} if={!member.duties_full} class="{member.duties.length > 80 && "ppr-sdw"} color-gray cursor-pointer text-wrap mt-1 badge badge-white">{ member.duties.length > 80 ? member.duties.slice(0,60) + "..." : member.duties }</span>
+            <span onclick={()=>updateData("duties_full",member,false)} if={member.duties_full} class="{member.duties.length > 80 && "ppr-sdw"} color-gray cursor-pointer text-wrap mt-1 badge badge-white">{ member.duties }</span>
+            -->
           </div>
-          <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#bio1">View Bio</button>
+          <button class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#bio{index}">View Bio</button>
         </div>
         <div class="card-footer bg-white d-flex justify-content-center">
-          <a class="mx-2" href="mailto:{member.email}" aria-label="Email">
+          
+          <a if={member.email} class="mx-2" href="mailto:{member.email}" aria-label="Email">
             <!-- mail icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H4z"/><path d="M22 6l-10 7L2 6"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
           </a>
-          <a class="mx-2" href="#" aria-label="LinkedIn">
+          <a if={member.socials.linkedin} class="mx-2" href="{member.socials.linkedin}" aria-label="LinkedIn">
             <!-- linkedin icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v6h-4v-6a2 2 0 0 0-4 0v6h-4v-12h4v2"/><rect x="2" y="9" width="4" height="11"/><circle cx="4" cy="5" r="2"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>  
           </a>
-          <a class="mx-2" href="#" aria-label="GitHub">
+          <a if={member.socials.github} class="mx-2" href="{member.socials.github}" aria-label="GitHub">
             <!-- github icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3"/><path d="M15 22v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 18 4.77 5.07 5.07 0 0 0 17.91 1S16.73.65 14 2.48a13.38 13.38 0 0 0-7 0C4.27.65 3.09 1 3.09 1A5.07 5.07 0 0 0 3 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>  
           </a>
         </div>
       </div>
@@ -70,14 +78,14 @@
   </div>
 
   <!-- Bios (Modals) -->
-  <div each={member in members} class="modal fade" id="bio1" tabindex="-1" role="dialog" aria-labelledby="bio1Label" aria-hidden="true">
+  <div each={(member,index) in members} class="modal fade" id="bio{index}" tabindex="-1" role="dialog" aria-labelledby="bio{index}Label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document"><div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="bio1Label">{member.bio.title}</h5>
+        <h5 class="modal-title" id="bio{index}Label">{member.bio.title}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
       </div>
       <div class="modal-body">
-        <pre class="text-wrap">
+        <pre class="text-normal text-wrap skinny">
           {member.bio.description}
         </pre>
       </div>
@@ -96,8 +104,8 @@
         email: "ryan.montgomery@vaultlambda.com",
         employment_type: "Direct",
         title: "Principal Engineer • Web, Database, Embedded, AI Systems",
-        languages: "C#, C/C++, JS, TS, Python, Java",
-        proficiencies: "SaaS, Realtime Data, Embedded (RTOS)/Relational (MSSQL, Oracle, MySQL, PostGresQL)/NoSQL Databases, AI Engineer",
+        languages: "C#, C, C++, JS, TS, Python, Java",
+        proficiencies: "SaaS, Realtime Data, Embedded (RTOS)/Relational (MSSQL, Oracle, MySQL, PostGresQL)/NoSQL Databases, Cross Platform Mobile Development, Artificial Intelligence (AGI, Perceptron)",
         duties: "Architecture & Development",
         bio:{
           title: "About Ryan",
@@ -115,6 +123,10 @@
 • Centralized Payment Gateways (Long Island University)
 • Business Intelligence Tools - Full Platforms for Data Protection, Reporting, Management (Long Island University)
 • Open Source Projects - View his github for more information`
+        },
+        socials:{
+          linkedin: "https://www.linkedin.com/in/ryantaylormontgomery/",
+          github: "https://github.com/PredictabilityIsGood"
         }
       },{
         avatar: "assets/images/gb-pfp.jpg",
@@ -123,7 +135,7 @@
         employment_type: "Contract Consultants",
         title: "Consulting Senior Software Engineer",
         languages: "JS, TS, Python, C#, Kotlin, Java",
-        proficiencies: "Web, iOS, Android",
+        proficiencies: "SaaS, Realtime Data, Relational (PostGresQL, MySQL) Databases, Cross Platform Mobile Development, iOS, Android, Artificial Intelligence (AGI, Perceptron)",
         duties: "Architecture Implementation",
         bio: {
           title: "About Giuseppe",
@@ -135,8 +147,12 @@
 • Full-Stack architecture & development of a Business Management Platform (ElanTech)
 • Scripting Automation for integration on external Vendor Websites & API's
 • eCommerce Integrations`
+        },
+        socials: {
+          linkedin: "https://www.linkedin.com/in/g-barbieri/",
+          github: "https://github.com/GiuseppeJBarbieri"
         }
-      },{
+      }/*,{
         avatar: "assets/images/as-pfp.jpg",
         name: "Alexander Sokolov",
         email: "info@vaultlambda.com",
@@ -148,20 +164,35 @@
         bio: {
           title: "About Alexander",
           description: "Bio coming soon"
+        },
+        socials: {
+          linkedin: "https://www.linkedin.com/in/alexander-sokolov-246427148/",
+          github: ""
         }
-      }],
+      }*/],
       search: "",
       search_keys: ["title","languages","proficiencies","duties"],
+      toggle_keys: ["languages_full","proficiencies_full","duties_full"],
       onBeforeMount(){
         this.buildSearchTree();
       },
       buildSearchTree() {
         this.members.forEach((member)=>{
           member.search_str = "";
+          this.toggle_keys.forEach((key)=>{
+            member.key=false;
+          })
           grul.atEvery(member,(data,htp,hlp)=>{
             hlp.length > 0 && this.search_keys.includes(hlp[hlp.length-1]) ? member.search_str += `, ${data}` : false;
           })
         })
+      },
+      updateData(key,clickedMember,value){
+        this.members.forEach((member)=>{
+          member[key] = false;
+        })
+        clickedMember[key] = value;
+        this.update();
       },
       updateSearch(search){
         this.search = search;

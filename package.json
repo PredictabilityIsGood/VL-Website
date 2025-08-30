@@ -11,7 +11,7 @@
         "prepublishOnly": "npm test",
         "typecheck": "tsc --noEmit",
         "start": "webpack serve --mode development --hot --port 3000",
-        "publish": "git subtree push --prefix dist origin gh-pages"
+        "publish": "publish" 
     },
     "keywords": [
         "Vault",
